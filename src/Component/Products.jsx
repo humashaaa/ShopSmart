@@ -27,9 +27,12 @@ const Products = () => {
               className="border p-4 rounded-lg"
             >
               <option value="">Filter By Category</option>
-              <option value="Web Development">Web Development</option>
-              <option value="Graphics Design">Graphics Design</option>
-              <option value="Digital Marketing">Digital Marketing</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Fitness">Fitness</option>
+              <option value="Footwear">Footwear</option>
+              <option value="Accessories">Accessories</option>
+              <option value="Home & Kitchen">Home & Kitchen</option>
+              <option value="Home & Office">Home & Office</option>
             </select>
           </div>
 
