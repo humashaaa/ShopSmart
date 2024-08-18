@@ -7,15 +7,16 @@ const Products = () => {
   const axiosPublic = useAxiosPublic();
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filter, setFilter] = useState('')
 
   const [count, setCount] = useState(0);
 
   const numberOfPages = Math.ceil(count / itemsPerPage);
   const pages = [...Array(numberOfPages).keys()].map((element) => element + 1);
   const { data: products = [], isPending } = useQuery({
-    queryKey: ["products", currentPage, itemsPerPage,],
+    queryKey: ["products", currentPage, itemsPerPage, filter],
     queryFn: async () => {
-      const res = await axiosPublic.get(`/all-products?page=${currentPage}&size=${itemsPerPage}`);
+      const res = await axiosPublic.get(`/all-products?page=${currentPage}&size=${itemsPerPage}&filter=${filter}`);
       console.log(res.data);
       setCount(res.data.length);
 
@@ -54,6 +55,11 @@ const Products = () => {
           {/* category */}
           <div>
             <select
+            onChange={e => {
+                setFilter(e.target.value)
+                setCurrentPage(1)
+              }}
+              value={filter}
               name="category"
               id="category"
               className="border p-4 rounded-lg"
