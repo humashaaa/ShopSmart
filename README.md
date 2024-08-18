@@ -1,8 +1,17 @@
-# React + Vite
+This is the frontend of the ShopSmart project, a modern e-commerce web application built using React.js, Tailwind CSS, and other modern frontend technologies.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Features
 
-Currently, two official plugins are available:
+- Product listing with pagination, filtering, and sorting.
+- User authentication (Login/Register).
+- Product searching.
+- Responsive design with Tailwind CSS.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+- Node.js installed on your machine (v14 or above recommended).
+- npm or yarn installed.
+
+## Getting Started
