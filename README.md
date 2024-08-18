@@ -15,3 +15,12 @@ Before you begin, ensure you have met the following requirements:
 - npm or yarn installed.
 
 ## Getting Started
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/humashaaa/ShopSmart.git
+   cd shopsmart
+   npm install
+   VITE_API_URL=http://localhost:5000/api
+   npm run dev
