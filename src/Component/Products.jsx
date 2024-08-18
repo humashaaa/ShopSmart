@@ -1,16 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import Product from "./Product";
+import { useState } from "react";
 
 const Products = () => {
   const axiosPublic = useAxiosPublic();
-  const pages = [1, 2, 3, 4, 5];
+  const [itemsPerPage, setItemsPerPage] = useState(8)
+  const [count, setCount] = useState(0)
 
+  const numberOfPages = Math.ceil(count / itemsPerPage)
+  const pages = [...Array(numberOfPages).keys()].map(element => element + 1)
   const { data: products = [], isPending } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
       const res = await axiosPublic.get(`/products`);
       console.log(res.data);
+      setCount(res.data.length)
+
       return res.data;
     },
   });
@@ -20,6 +26,7 @@ const Products = () => {
     <div>
       <div>
         <div className="flex flex-col md:flex-row justify-center items-center gap-5 ">
+          {/* category */}
           <div>
             <select
               name="category"
@@ -35,6 +42,39 @@ const Products = () => {
               <option value="Home & Office">Home & Office</option>
             </select>
           </div>
+          {/* brand name */}
+          {/* <div>
+            <select
+              name="name"
+              id="name"
+              className="border p-4 rounded-lg"
+            >
+              <option value="">Filter By Brand Name</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Fitness">Fitness</option>
+              <option value="Footwear">Footwear</option>
+              <option value="Accessories">Accessories</option>
+              <option value="Home & Kitchen">Home & Kitchen</option>
+              <option value="Home & Office">Home & Office</option>
+            </select>
+          </div> */}
+
+          {/* price */}
+          {/* <div>
+            <select
+              name="category"
+              id="category"
+              className="border p-4 rounded-lg"
+            >
+              <option value="">Filter By Category</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Fitness">Fitness</option>
+              <option value="Footwear">Footwear</option>
+              <option value="Accessories">Accessories</option>
+              <option value="Home & Kitchen">Home & Kitchen</option>
+              <option value="Home & Office">Home & Office</option>
+            </select>
+          </div> */}
 
           <form>
             <div className="flex p-1 overflow-hidden border rounded-lg    focus-within:ring focus-within:ring-opacity-40 focus-within:border-blue-400 focus-within:ring-blue-300">
