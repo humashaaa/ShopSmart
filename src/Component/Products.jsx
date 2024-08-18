@@ -1,26 +1,51 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import Product from "./Product";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Products = () => {
   const axiosPublic = useAxiosPublic();
-  const [itemsPerPage, setItemsPerPage] = useState(8)
-  const [count, setCount] = useState(0)
+  const [itemsPerPage, setItemsPerPage] = useState(8);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const numberOfPages = Math.ceil(count / itemsPerPage)
-  const pages = [...Array(numberOfPages).keys()].map(element => element + 1)
+  const [count, setCount] = useState(0);
+
+  const numberOfPages = Math.ceil(count / itemsPerPage);
+  const pages = [...Array(numberOfPages).keys()].map((element) => element + 1);
   const { data: products = [], isPending } = useQuery({
-    queryKey: ["products"],
+    queryKey: ["products", currentPage, itemsPerPage,],
     queryFn: async () => {
-      const res = await axiosPublic.get(`/products`);
+      const res = await axiosPublic.get(`/all-products?page=${currentPage}&size=${itemsPerPage}`);
       console.log(res.data);
-      setCount(res.data.length)
+      setCount(res.data.length);
 
       return res.data;
     },
   });
   console.log(products);
+
+  useEffect(
+    () => {
+      const getCount = async () => {
+        const { data } = await axiosPublic.get(`/products-count`);
+
+        // -count?filter=${filter}&search=${search}`
+        setCount(data.count);
+      };
+      getCount();
+    },
+    [
+      // filter, search
+    ]
+  );
+
+  console.log(count);
+
+  //  handle pagination button
+  const handlePaginationButton = (value) => {
+    console.log(value);
+    setCurrentPage(value);
+  };
 
   return (
     <div>
@@ -109,9 +134,13 @@ const Products = () => {
           ))}
         </div>
       </div>
-
+      {/* previous button */}
       <div className="flex justify-center mt-16 mb-12">
-        <button className="px-4 py-2 mx-1 text-gray-700 disabled:text-gray-500 capitalize bg-gray-200 rounded-md disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:bg-blue-500  hover:text-white">
+        <button
+          disabled={currentPage === 1}
+          onClick={() => handlePaginationButton(currentPage - 1)}
+          className="px-4 py-2 mx-1 text-gray-700 disabled:text-gray-500 capitalize bg-gray-200 rounded-md disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:bg-blue-500  hover:text-white"
+        >
           <div className="flex items-center -mx-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -131,17 +160,24 @@ const Products = () => {
             <span className="mx-1">previous</span>
           </div>
         </button>
-
+       
         {pages.map((btnNum) => (
           <button
+            onClick={() => handlePaginationButton(btnNum)}
             key={btnNum}
-            className={`hidden px-4 py-2 mx-1 transition-colors duration-300 transform  rounded-md sm:inline hover:bg-blue-500  hover:text-white`}
-          >
+            className={`hidden ${
+                currentPage === btnNum ? 'bg-blue-500 text-white' : ''
+              } px-4 py-2 mx-1 transition-colors duration-300 transform  rounded-md sm:inline hover:bg-blue-500  hover:text-white`}
+            >
+          
             {btnNum}
           </button>
         ))}
-
-        <button className="px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform bg-gray-200 rounded-md hover:bg-blue-500 disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:text-white disabled:cursor-not-allowed disabled:text-gray-500">
+ {/* next button */}
+        <button 
+         disabled={currentPage === numberOfPages}
+          onClick={() => handlePaginationButton(currentPage + 1)}
+        className="px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform bg-gray-200 rounded-md hover:bg-blue-500 disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:text-white disabled:cursor-not-allowed disabled:text-gray-500">
           <div className="flex items-center -mx-1">
             <span className="mx-1">Next</span>
 
