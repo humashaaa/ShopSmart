@@ -134,7 +134,7 @@ const Products = () => {
             </select>
           </div>
         </div>
-        <div className="grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 lg:gap-8 mt-8 xl:mt-16 md:grid-cols-2 lg:grid-cols-4">
           {products.map((product) => (
             <Product key={product.id} product={product}></Product>
           ))}
